@@ -27,9 +27,10 @@ import { useRouter } from 'next/navigation';
             user,
             password
         }).then((response)=>{
-          if(response.status ==200){
+          if(response.status ==201){
            const token = response.data.token
            const userId = response.data.userId
+           
            sessionStorage.setItem("token", token);
            sessionStorage.setItem("userId", userId);
            router.replace("/home")
