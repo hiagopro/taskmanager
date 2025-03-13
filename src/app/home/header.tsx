@@ -2,20 +2,15 @@
 import { useEffect, useState } from "react";
 import {
   IconChevronDown,
-  IconHeart,
+  
   IconLogout,
-  IconMessage,
-  IconPlayerPause,
-  IconSettings,
-  IconStar,
-  IconSwitchHorizontal,
-  IconTrash,
+
 } from "@tabler/icons-react";
 import cx from "clsx";
 import {
   Avatar,
   Burger,
-  Button,
+ 
   Container,
   Group,
   Menu,
@@ -26,7 +21,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MantineLogo } from "@mantinex/mantine-logo";
+
 import classes from "./Header.module.css";
 import { useRouter } from "next/navigation";
 
