@@ -1,5 +1,5 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 import {
   IconChevronDown,
   IconHeart,
@@ -10,8 +10,8 @@ import {
   IconStar,
   IconSwitchHorizontal,
   IconTrash,
-} from '@tabler/icons-react';
-import cx from 'clsx';
+} from "@tabler/icons-react";
+import cx from "clsx";
 import {
   Avatar,
   Burger,
@@ -24,77 +24,88 @@ import {
   Title,
   UnstyledButton,
   useMantineTheme,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { MantineLogo } from '@mantinex/mantine-logo';
-import classes from './Header.module.css';
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { MantineLogo } from "@mantinex/mantine-logo";
+import classes from "./Header.module.css";
+import { useRouter } from "next/navigation";
 
 const user = {
-  name: 'Jane Spoonfighter',
-  email: 'janspoon@fighter.dev',
-  
+  name: "Jane Spoonfighter",
+  email: "janspoon@fighter.dev",
 };
 
-const tabs = [
- 'Tasks',
- 'Completed Tasks'
-];
-
-export function Header({setSessionSelected}) {
+export function Header({ setSessionSelected, name, admin, users }) {
   const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-  const items = tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab} onClick={()=> setSessionSelected(tab)}>
-      {tab}
-    </Tabs.Tab>
-  ));
+  const tabs = ["Tasks", "Completed Tasks"];
+  const tabsAdmin = ["Tasks", "Completed Tasks", "Users"];
 
+  const router = useRouter();
+  const items = admin
+    ? tabsAdmin.map((tab) => (
+        <Tabs.Tab value={tab} key={tab} onClick={() => setSessionSelected(tab)}>
+          {tab}
+        </Tabs.Tab>
+      ))
+    : tabs.map((tab) => (
+        <Tabs.Tab value={tab} key={tab} onClick={() => setSessionSelected(tab)}>
+          {tab}
+        </Tabs.Tab>
+      ));
+  function logout() {
+    sessionStorage.setItem("token", "");
+    sessionStorage.setItem("userId", "");
+    router.replace("/login");
+    console.log("loged out");
+  }
   return (
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
         <Group justify="space-between">
-        <Title order={1}>Task Enginer</Title>
+          <Title order={1}>Task Enginer</Title>
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
 
           <Menu
             width={260}
             position="bottom-end"
-            transitionProps={{ transition: 'pop-top-right' }}
+            transitionProps={{ transition: "pop-top-right" }}
             onClose={() => setUserMenuOpened(false)}
             onOpen={() => setUserMenuOpened(true)}
             withinPortal
           >
             <Menu.Target>
               <UnstyledButton
-                className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+                className={cx(classes.user, {
+                  [classes.userActive]: userMenuOpened,
+                })}
               >
                 <Group gap={7}>
-                  <Avatar src={user.image} alt={user.name} radius="xl" size={20} />
+                  <Avatar alt={name} radius="xl" size={20} />
                   <Text fw={500} size="sm" lh={1} mr={3}>
-                    {user.name}
+                    {name}
                   </Text>
                   <IconChevronDown size={12} stroke={1.5} />
                 </Group>
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              
-
               <Menu.Label>Settings</Menu.Label>
-             
-            
-              <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
+
+              <Menu.Item
+                onClick={logout}
+                leftSection={<IconLogout size={16} stroke={1.5} />}
+              >
+                Logout
+              </Menu.Item>
 
               <Menu.Divider />
-
-              
             </Menu.Dropdown>
           </Menu>
         </Group>
-       
       </Container>
       <Container size="md">
         <Tabs
