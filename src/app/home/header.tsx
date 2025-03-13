@@ -25,12 +25,14 @@ import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
 import { useRouter } from "next/navigation";
 
-const user = {
-  name: "Jane Spoonfighter",
-  email: "janspoon@fighter.dev",
-};
+interface HeaderType {
+  setSessionSelected: string;
+  name: string;
+  admin: boolean;
+ 
+}
 
-export function Header({ setSessionSelected, name, admin, users }) {
+export function Header({ setSessionSelected, name, admin }:HeaderType) {
   const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);

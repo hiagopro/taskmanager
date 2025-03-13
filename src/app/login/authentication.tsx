@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 export function AuthenticationTitle() {
   const [user, setUser] = useState("");
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState<string>();
   const router = useRouter();
   function signin() {
     console.log(user, password);

@@ -29,6 +29,32 @@ interface RowData {
   clientId: number;
   userid: number;
 }
+interface ThProps {
+  children?: React.ReactNode; // The content of the column header (usually a string)
+  reversed: boolean; // Indicates if the column is sorted in descending order
+  sorted: boolean; // Indicates if the column is currently sorted
+  onSort: () => void; // Function that handles the sorting logic when clicked
+}
+interface TableType {
+  tasks: string;
+  completedTasks: [
+    deadline:string,
+    date:string,
+    clientId:number,
+    task:string,
+
+  ];
+  
+  sessionSelected:string;
+  users: [
+    name:string,
+    id:number,
+    user:string,
+    useracess:string,
+  ];
+  admin:boolean;
+ 
+}
 
 export function TableSort({
   tasks,
@@ -37,7 +63,7 @@ export function TableSort({
   sessionSelected,
   users,
   admin,
-}) {
+}:TableType) {
   const [sortedTasks, setSortedTasks] = useState<RowData[]>([]);
 
   useEffect(() => {
@@ -237,9 +263,9 @@ export function TableSort({
           </Table.Tr>
         </Table.Tbody>
         <Table.Tbody>
-          {rows?.length > 0 ? (
-            rows
-          ) : (
+        {rows && rows.length > 0 ? (
+             rows
+              ) :(
             <Table.Tr>
               <Table.Td
                 colSpan={tasks && tasks[0] ? Object.keys(tasks[0]).length : 0}
@@ -256,7 +282,7 @@ export function TableSort({
   );
 }
 
-function Th({ children, reversed, sorted, onSort }: ThProps) {
+function Th({ children, reversed, sorted, onSort }:ThProps) {
   const Icon = sorted
     ? reversed
       ? IconChevronUp
