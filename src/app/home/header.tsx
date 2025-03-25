@@ -1,21 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
+  IconAlignBoxLeftTop,
   IconChevronDown,
-  
   IconLogout,
-
 } from "@tabler/icons-react";
 import cx from "clsx";
 import {
   Avatar,
   Burger,
- 
+  Button,
   Container,
   Group,
   Menu,
+  Paper,
+  SimpleGrid,
   Tabs,
   Text,
+  Textarea,
+  TextInput,
   Title,
   UnstyledButton,
   useMantineTheme,
@@ -24,22 +27,23 @@ import { useDisclosure } from "@mantine/hooks";
 
 import classes from "./Header.module.css";
 import { useRouter } from "next/navigation";
+import { GetInTouch } from "./popup";
 
 interface HeaderType {
   setSessionSelected: string;
   name: string;
   admin: boolean;
- 
 }
 
-export function Header({ setSessionSelected, name, admin }:HeaderType) {
+export function Header({ setSessionSelected, name, admin }: HeaderType) {
   const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
   const tabs = ["Tasks", "Completed Tasks"];
   const tabsAdmin = ["Tasks", "Completed Tasks", "Users"];
-
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [showAddTask, setShowAddTask] = useState(false);
   const router = useRouter();
   const items = admin
     ? tabsAdmin.map((tab) => (
@@ -65,7 +69,6 @@ export function Header({ setSessionSelected, name, admin }:HeaderType) {
           <Title order={1}>Task Enginer</Title>
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-
           <Menu
             width={260}
             position="bottom-end"
@@ -98,6 +101,24 @@ export function Header({ setSessionSelected, name, admin }:HeaderType) {
               >
                 Logout
               </Menu.Item>
+              {admin === true ? (
+                <>
+                  <Menu.Item
+                    onClick={() => setShowAddUser(true)}
+                    leftSection={<Avatar alt={name} radius="xl" size={20} />}
+                  >
+                    New User
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => setShowAddTask(true)}
+                    leftSection={
+                      <IconAlignBoxLeftTop stroke={2} radius="xl" size={20} />
+                    }
+                  >
+                    New Task
+                  </Menu.Item>
+                </>
+              ) : null}
 
               <Menu.Divider />
             </Menu.Dropdown>
@@ -118,6 +139,12 @@ export function Header({ setSessionSelected, name, admin }:HeaderType) {
           <Tabs.List>{items}</Tabs.List>
         </Tabs>
       </Container>
+      {showAddUser && (
+        <GetInTouch Popup={"Adduser"} setPopup={setShowAddUser} />
+      )}
+      {showAddTask && (
+        <GetInTouch Popup={"Addtask"} setPopup={setShowAddTask} />
+      )}
     </div>
   );
 }

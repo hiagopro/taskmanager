@@ -4,7 +4,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { TableSort } from "./body";
 import { Header } from "./header";
-
+import { useRouter } from "next/navigation";
+import { Loader } from "@mantine/core";
 export default function HomePage() {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
@@ -14,6 +15,8 @@ export default function HomePage() {
   const [admin, setAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
@@ -25,6 +28,7 @@ export default function HomePage() {
           userId: userId,
         },
       });
+
       const data = (await response.data) as any;
       const tasks = data.filter((task) => task.state === "pendente");
       const tasksConcluid = data.filter((task) => task.state === "concluido");
@@ -39,8 +43,7 @@ export default function HomePage() {
         },
       });
       const data = response.data;
-
-      console.log(data, "thisa caess", admin);
+      const status = response.status;
       if (data === true) {
         setAdmin(true);
         axios
@@ -53,14 +56,21 @@ export default function HomePage() {
           .then((res) => setUsers(res.data));
         console.log(admin);
       } else {
-        setAdmin(false); // Caso contrário, define como false
+        setAdmin(false);
+        if (status != 201) {
+          router.replace("/login");
+        } // Caso contrário, define como false
       }
       setLoading(false); // Define loading como false após verificar o acesso
     };
     getAcess();
-    axios
-      .get("http://localhost:500/logedin", {})
-      .then((response) => setLoged(response.data));
+    axios.get("http://localhost:500/logedin", {}).then((response) => {
+      setLoged(response.data);
+      if (response.status != 201) {
+        router.replace("/home");
+        alert("Please, do the login again");
+      }
+    });
     axios
       .get("http://localhost:500/getnameuser", {
         headers: {
@@ -68,29 +78,40 @@ export default function HomePage() {
           userId: userId,
         },
       })
-      .then((res) => setName(res.data));
-    console.log(name);
-    console.log(loged);
+      .then((res) => {
+        setName(res.data);
+        if (res.status != 201) {
+          router.replace("/home");
+          alert("Please, do the login again");
+        }
+      });
 
-    console.log(admin, "acess is this");
     fetch();
   }, []);
   const handlePutConcluid = async (taskId) => {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
     console.log(userId, "oi");
-    await axios.patch(
-      "http://localhost:500/tasks",
-      {
-        taskId,
-      },
-      {
-        headers: {
-          token: token,
-          userid: userId,
+    await axios
+      .patch(
+        "http://localhost:500/tasks",
+        {
+          taskId,
         },
-      }
-    );
+        {
+          headers: {
+            token: token,
+            userid: userId,
+          },
+        }
+      )
+      .then((res) => {
+        setName(res.data);
+        if (res.status != 201) {
+          router.replace("/home");
+          alert("Please, do the login again");
+        }
+      });
     location.reload();
   };
 
@@ -121,6 +142,8 @@ export default function HomePage() {
       />
     </div>
   ) : (
-    <div>wait</div>
+    <div className="flex items-center justify-center h-screen">
+      <Loader className="m-auto" color="blue" />
+    </div>
   );
 }

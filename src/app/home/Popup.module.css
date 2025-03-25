@@ -1,0 +1,73 @@
+/* Wrapper do Popup */
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Alinha o conteúdo centralmente */
+
+  position: fixed; /* Fixa a posição do popup na tela */
+  top: 50%; /* Coloca no meio vertical da tela */
+  left: 50%; /* Coloca no meio horizontal da tela */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Ajusta para que o centro do popup esteja no centro da tela */
+  background-color: var(
+    --mantine-color-white
+  ); /* Fundo branco, sem transparência */
+  padding: 20px;
+  border-radius: 10px; /* Bordas arredondadas */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombras para dar um efeito de profundidade */
+  z-index: 1000; /* Garante que o popup esteja acima dos outros elementos */
+  max-width: 500px; /* Largura máxima do popup */
+  width: 100%;
+}
+
+.icon {
+  margin-right: var(--mantine-spacing-md);
+}
+
+.title {
+  color: var(--mantine-color-dark);
+}
+
+.description {
+  color: var(--mantine-color-white);
+}
+
+/* Campo de entrada com label */
+.field {
+  display: flex;
+  flex-direction: column; /* Organiza o label e o campo de entrada verticalmente */
+  margin-bottom: 20px; /* Espaçamento entre os campos */
+
+  background-color: hidden; /* Herda a cor de fundo do elemento pai */
+  border: none;
+}
+
+.inputLabel {
+  /* Cor visível para labels */
+  font-size: 14px;
+  margin-bottom: 5px; /* Espaçamento entre o label e o campo */
+}
+
+/* Estilo para os inputs */
+.inputField {
+  width: 100%;
+  padding: 8px;
+
+  font-size: 14px;
+}
+
+.control {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+/* Estilo adicional para o botão */
+
+.Popup-module___OQuaW__wrapper {
+  background-color: brown;
+  width: 20px;
+}

@@ -36,7 +36,7 @@ export function AuthenticationTitle() {
           sessionStorage.setItem("userId", userId);
           router.replace("/home");
         } else {
-          console.log(response.data);
+          alert(response);
         }
       });
   }
