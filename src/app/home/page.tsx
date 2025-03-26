@@ -27,7 +27,7 @@ export default function HomePage() {
   const [admin, setAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const HOST_URL = process.env.HOST_URL;
+  const HOST_URL = process.env.HOST_URL_API;
   const router = useRouter();
   useEffect(() => {
     const token = sessionStorage.getItem("token");
