@@ -21,7 +21,7 @@ export function AuthenticationTitle() {
   function signin() {
     console.log(user, password);
     axios
-      .post(`${HOST_URL}/login`, {
+      .post(`${HOST_URL}login`, {
         user,
         password,
       })
