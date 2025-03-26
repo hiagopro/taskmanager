@@ -19,7 +19,7 @@ export function AuthenticationTitle() {
   const HOST_URL = process.env.HOST_URL_API;
   const router = useRouter();
   function signin() {
-    console.log(user, password);
+    console.log(HOST_URL);
     axios
       .post(`${HOST_URL}login`, {
         user,
