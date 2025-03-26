@@ -6,6 +6,18 @@ import { TableSort } from "./body";
 import { Header } from "./header";
 import { useRouter } from "next/navigation";
 import { Loader } from "@mantine/core";
+interface Task {
+  id: number;
+  task: string;
+  date: string;
+  deadline: string;
+  state: "pendente" | "concluido"; // Como você está filtrando por essas duas opções
+  clientId: number;
+  userId: number;
+  user?: string; // Caso "user" seja opcional
+  name?: string; // Caso "name" seja opcional
+  useracess?: string; // Caso "useracess" seja opcional
+}
 export default function HomePage() {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
@@ -29,9 +41,11 @@ export default function HomePage() {
         },
       });
 
-      const data = (await response.data) as any;
-      const tasks = data.filter((task) => task.state === "pendente");
-      const tasksConcluid = data.filter((task) => task.state === "concluido");
+      const data = await response.data;
+      const tasks = data.filter((task: Task) => task.state === "pendente");
+      const tasksConcluid = data.filter(
+        (task: Task) => task.state === "concluido"
+      );
       setTasks(tasks);
       setCompletedTaks(tasksConcluid);
     };
@@ -53,7 +67,11 @@ export default function HomePage() {
               userId: userId,
             },
           })
-          .then((res) => setUsers(res.data));
+          .then((res) => setUsers(res.data))
+          .catch((res) => {
+            alert(res.response.data);
+            router.replace("/login");
+          });
         console.log(admin);
       } else {
         setAdmin(false);
@@ -80,15 +98,15 @@ export default function HomePage() {
       })
       .then((res) => {
         setName(res.data);
-        if (res.status != 201) {
-          router.replace("/home");
-          alert("Please, do the login again");
-        }
+      })
+      .catch((res) => {
+        alert(res.response.data);
+        router.replace("/login");
       });
 
     fetch();
   }, []);
-  const handlePutConcluid = async (taskId) => {
+  const handlePutConcluid = async (taskId: number) => {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
     console.log(userId, "oi");
@@ -107,10 +125,10 @@ export default function HomePage() {
       )
       .then((res) => {
         setName(res.data);
-        if (res.status != 201) {
-          router.replace("/home");
-          alert("Please, do the login again");
-        }
+      })
+      .catch((res) => {
+        alert(res.response.data);
+        router.replace("/login");
       });
     location.reload();
   };

@@ -1,12 +1,7 @@
-'use client'
-import axios from "axios";
-import React from "react";
-import HomePage from "./home/page";
+"use client";
 
-export default function Home(){
-    return(
-        <div>
-          
-        </div>
-    )
+import React from "react";
+
+export default function Home() {
+  return <div></div>;
 }

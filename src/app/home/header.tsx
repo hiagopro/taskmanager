@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   IconAlignBoxLeftTop,
   IconChevronDown,
@@ -9,19 +9,13 @@ import cx from "clsx";
 import {
   Avatar,
   Burger,
-  Button,
   Container,
   Group,
   Menu,
-  Paper,
-  SimpleGrid,
   Tabs,
   Text,
-  Textarea,
-  TextInput,
   Title,
   UnstyledButton,
-  useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -30,13 +24,12 @@ import { useRouter } from "next/navigation";
 import { GetInTouch } from "./popup";
 
 interface HeaderType {
-  setSessionSelected: string;
+  setSessionSelected: React.Dispatch<React.SetStateAction<string>>;
   name: string;
   admin: boolean;
 }
 
 export function Header({ setSessionSelected, name, admin }: HeaderType) {
-  const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 

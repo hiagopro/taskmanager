@@ -29,31 +29,47 @@ interface RowData {
   clientId: number;
   userid: number;
 }
+
 interface ThProps {
   children?: React.ReactNode; // The content of the column header (usually a string)
   reversed: boolean; // Indicates if the column is sorted in descending order
   sorted: boolean; // Indicates if the column is currently sorted
   onSort: () => void; // Function that handles the sorting logic when clicked
 }
+type User = {
+  name: string;
+  id: number;
+  user: string;
+  useracess: string;
+};
 interface TableType {
-  tasks: string;
-  completedTasks: [
-    deadline:string,
-    date:string,
-    clientId:number,
-    task:string,
+  tasks: RowData[];
+  completedTasks: {
+    deadline: string;
+    date: string;
+    clientId: number;
+    task: string;
+    state: string;
+  }[];
 
-  ];
-  
-  sessionSelected:string;
-  users: [
-    name:string,
-    id:number,
-    user:string,
-    useracess:string,
-  ];
-  admin:boolean;
- 
+  handlePutConcluid: (taskId: number) => void;
+
+  sessionSelected: string;
+  users: User[];
+  admin: boolean;
+}
+interface UsersType {
+  name: string;
+  id: number;
+  user: string;
+  useracess: string;
+}
+interface CompletedTasks {
+  deadline: string;
+  date: string;
+  clientId: number;
+  task: string;
+  state: string;
 }
 
 export function TableSort({
@@ -63,22 +79,23 @@ export function TableSort({
   sessionSelected,
   users,
   admin,
-}:TableType) {
+}: TableType) {
   const [sortedTasks, setSortedTasks] = useState<RowData[]>([]);
-
+  const [sortedCompletedTasks, setSortedCompletedTasks] = useState<
+    CompletedTasks[]
+  >([]);
+  const [sortedUsers, setSortedUsers] = useState<UsersType[]>([]);
   useEffect(() => {
-    if (sessionSelected === "Completed Tasks") {
-      setSortedTasks(completedTasks);
-    } else if (sessionSelected === "Users") {
+    setSortedCompletedTasks(completedTasks);
+    if (sessionSelected === "Users") {
       if (Array.isArray(users)) {
-        setSortedTasks(users); // Garantir que users seja um array
-      } else {
-        setSortedTasks([]); // Caso users não seja um array, defina um array vazio
+        setSortedUsers(users); // Garantir que users seja um array
       }
+
       console.log(sessionSelected, sortedTasks);
-    } else {
-      setSortedTasks(tasks);
     }
+    setSortedTasks(tasks);
+
     console.log(admin, "boolw");
   }, [sessionSelected, tasks, completedTasks, users]);
 
@@ -96,18 +113,14 @@ export function TableSort({
     const { value } = event.currentTarget;
     setSearch(value);
   };
-
-  const rows = Array.isArray(sortedTasks)
-    ? sortedTasks.map((row, index) => (
+  const getRows = () => {
+    if (!Array.isArray(sortedTasks)) {
+      return null;
+    }
+    if (sessionSelected === "Tasks") {
+      return sortedTasks.map((row, index) => (
         <Table.Tr key={index}>
-          {sessionSelected === "Users" ? (
-            <>
-              <Table.Td>{row.name}</Table.Td>
-              <Table.Td>{row.user}</Table.Td>
-              <Table.Td>{row.useracess}</Table.Td>
-              <Table.Td>{row.id}</Table.Td>
-            </>
-          ) : admin === true ? (
+          {admin === true ? (
             <>
               <Table.Td>{row.task}</Table.Td>
               <Table.Td>{row.date}</Table.Td>
@@ -136,8 +149,44 @@ export function TableSort({
             </Table.Td>
           )}
         </Table.Tr>
-      ))
-    : null;
+      ));
+    }
+    if (sessionSelected === "Users" && admin === true) {
+      return sortedUsers.map((row, index) => (
+        <Table.Tr key={index}>
+          <>
+            <Table.Td>{row.name}</Table.Td>
+            <Table.Td>{row.user}</Table.Td>
+            <Table.Td>{row.useracess}</Table.Td>
+            <Table.Td>{row.id}</Table.Td>
+          </>
+        </Table.Tr>
+      ));
+    }
+    if (sessionSelected === "Completed Tasks") {
+      return sortedCompletedTasks.map((row, index) => (
+        <Table.Tr key={index}>
+          {admin === true ? (
+            <>
+              <Table.Td>{row.task}</Table.Td>
+              <Table.Td>{row.date}</Table.Td>
+              <Table.Td>{row.deadline}</Table.Td>
+              <Table.Td>{row.state}</Table.Td>
+              <Table.Td>{row.clientId}</Table.Td>
+            </>
+          ) : (
+            <>
+              <Table.Td>{row.task}</Table.Td>
+              <Table.Td>{row.date}</Table.Td>
+              <Table.Td>{row.deadline}</Table.Td>
+              <Table.Td>{row.state}</Table.Td>
+            </>
+          )}
+        </Table.Tr>
+      ));
+    }
+  };
+  const rows = getRows();
 
   return (
     <ScrollArea className="mx-4">
@@ -263,9 +312,9 @@ export function TableSort({
           </Table.Tr>
         </Table.Tbody>
         <Table.Tbody>
-        {rows && rows.length > 0 ? (
-             rows
-              ) :(
+          {rows && rows.length > 0 ? (
+            rows
+          ) : (
             <Table.Tr>
               <Table.Td
                 colSpan={tasks && tasks[0] ? Object.keys(tasks[0]).length : 0}
@@ -282,7 +331,7 @@ export function TableSort({
   );
 }
 
-function Th({ children, reversed, sorted, onSort }:ThProps) {
+function Th({ children, reversed, sorted, onSort }: ThProps) {
   const Icon = sorted
     ? reversed
       ? IconChevronUp

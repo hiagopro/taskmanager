@@ -1,21 +1,15 @@
-import {
-  Button,
-  Group,
-  Input,
-  Paper,
-  SimpleGrid,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, Group, Input, Paper, Text, TextInput } from "@mantine/core";
 
 import classes from "./Popup.module.css";
 import { IconChevronDown } from "@tabler/icons-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
-export function GetInTouch({ Popup, setPopup }) {
+interface PopupType {
+  Popup: string;
+  setPopup: Dispatch<SetStateAction<boolean>>;
+}
+export function GetInTouch({ Popup, setPopup }: PopupType) {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userRole, setUserRole] = useState("user");
@@ -43,11 +37,9 @@ export function GetInTouch({ Popup, setPopup }) {
             },
           }
         )
-        .then((res) => {
-          if (res.status != 201) {
-            alert("You cant do This");
-            router.replace("/login");
-          }
+        .catch((res) => {
+          alert(res.response.data);
+          router.replace("/login");
         });
       setPopup(false);
     } else if (Popup === "Addtask") {
@@ -67,11 +59,9 @@ export function GetInTouch({ Popup, setPopup }) {
             },
           }
         )
-        .then((res) => {
-          if (res.status != 201) {
-            alert("You cant do This");
-            router.replace("/login");
-          }
+        .catch((res) => {
+          alert(res.response.data);
+          router.replace("/login");
         });
       setPopup(false);
     }

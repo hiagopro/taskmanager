@@ -1,13 +1,10 @@
 "use client";
 import {
-  Anchor,
   Button,
-  Checkbox,
   Container,
   Group,
   Paper,
   PasswordInput,
-  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -35,9 +32,11 @@ export function AuthenticationTitle() {
           sessionStorage.setItem("token", token);
           sessionStorage.setItem("userId", userId);
           router.replace("/home");
-        } else {
-          alert(response);
         }
+        console.log();
+      })
+      .catch((res) => {
+        alert(res.response.data);
       });
   }
   return (
