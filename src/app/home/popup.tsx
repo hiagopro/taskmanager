@@ -16,6 +16,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const HOST_URL = import.meta.env.HOST_URL;
   async function AddUserOrTask() {
     const token = sessionStorage.getItem("token");
     const userSessionId = sessionStorage.getItem("userId");
@@ -23,7 +24,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
     if (Popup === "Adduser") {
       await axios
         .post(
-          "http://localhost:500/adduser",
+          `${HOST_URL}adduser`,
           {
             username: userName,
             useremail: userEmail,
@@ -45,7 +46,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
     } else if (Popup === "Addtask") {
       await axios
         .post(
-          "http://localhost:500/addtask",
+          `${HOST_URL}addtask`,
           {
             task: userName,
             deadline: userEmail,

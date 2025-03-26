@@ -27,14 +27,14 @@ export default function HomePage() {
   const [admin, setAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const HOST_URL = import.meta.env.HOST_URL;
   const router = useRouter();
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
 
     const fetch = async () => {
-      const response = await axios.get(`http://localhost:500/tasks/${userId}`, {
+      const response = await axios.get(`${HOST_URL}tasks/${userId}`, {
         headers: {
           token: token,
           userId: userId,
@@ -50,7 +50,7 @@ export default function HomePage() {
       setCompletedTaks(tasksConcluid);
     };
     const getAcess = async () => {
-      const response = await axios.get("http://localhost:500/adminacess", {
+      const response = await axios.get(`${HOST_URL}adminacess`, {
         headers: {
           token: token,
           userId: userId,
@@ -61,7 +61,7 @@ export default function HomePage() {
       if (data === true) {
         setAdmin(true);
         axios
-          .get("http://localhost:500/users", {
+          .get(`${HOST_URL}users`, {
             headers: {
               token: token,
               userId: userId,
@@ -82,7 +82,7 @@ export default function HomePage() {
       setLoading(false); // Define loading como false após verificar o acesso
     };
     getAcess();
-    axios.get("http://localhost:500/logedin", {}).then((response) => {
+    axios.get(`${HOST_URL}logedin`, {}).then((response) => {
       setLoged(response.data);
       if (response.status != 201) {
         router.replace("/home");
@@ -90,7 +90,7 @@ export default function HomePage() {
       }
     });
     axios
-      .get("http://localhost:500/getnameuser", {
+      .get(`${HOST_URL}getnameuser`, {
         headers: {
           token: token,
           userId: userId,
@@ -112,7 +112,7 @@ export default function HomePage() {
     console.log(userId, "oi");
     await axios
       .patch(
-        "http://localhost:500/tasks",
+        `${HOST_URL}tasks`,
         {
           taskId,
         },
