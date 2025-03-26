@@ -16,7 +16,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const HOST_URL = import.meta.env.HOST_URL;
+  const HOST_URL = process.env.HOST_URL;
   async function AddUserOrTask() {
     const token = sessionStorage.getItem("token");
     const userSessionId = sessionStorage.getItem("userId");

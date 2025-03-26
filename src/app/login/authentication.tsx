@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 export function AuthenticationTitle() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState<string>();
-  const HOST_URL = import.meta.env.HOST_URL_API;
+  const HOST_URL = process.env.HOST_URL_API;
   const router = useRouter();
   function signin() {
     console.log(user, password);
