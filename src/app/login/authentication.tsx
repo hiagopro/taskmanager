@@ -21,10 +21,18 @@ export function AuthenticationTitle() {
   function signin() {
     console.log(HOST_URL);
     axios
-      .post(`${HOST_URL}login`, {
-        user,
-        password,
-      })
+      .post(
+        `${HOST_URL}login`,
+        {
+          user,
+          password,
+        },
+        {
+          headers: {
+            Origin: window.location.origin, // Define a origem correta
+          },
+        }
+      )
       .then((response) => {
         if (response.status == 201) {
           const token = response.data.token;
