@@ -143,7 +143,7 @@ export default function HomePage() {
     console.log(admin, "new");
   }, [admin]);
 
-  return loged && !loading ? (
+  return !loading ? (
     <div className="">
       <Header
         name={name}
