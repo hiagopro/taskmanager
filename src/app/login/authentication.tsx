@@ -9,15 +9,21 @@ import {
   Title,
 } from "@mantine/core";
 import classes from "./AuthenticationTitle.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export function AuthenticationTitle() {
   const [user, setUser] = useState("");
+  const [loged, setLoged] = useState(false);
   const [password, setPassword] = useState<string>();
   const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL_API;
   const router = useRouter();
+  useEffect(() => {
+    if (loged === true) {
+      router.replace("/home");
+    }
+  }, []);
   function signin() {
     console.log(HOST_URL);
     axios
@@ -29,7 +35,7 @@ export function AuthenticationTitle() {
         if (response.status == 201) {
           const token = response.data.token;
           const userId = response.data.userId;
-
+          setLoged(true);
           sessionStorage.setItem("token", token);
           sessionStorage.setItem("userId", userId);
           router.replace("/home");
