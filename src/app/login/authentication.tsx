@@ -19,11 +19,7 @@ export function AuthenticationTitle() {
   const [password, setPassword] = useState<string>();
   const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL_API;
   const router = useRouter();
-  useEffect(() => {
-    if (loged === true) {
-      router.replace("/home");
-    }
-  }, []);
+
   function signin() {
     console.log(HOST_URL);
     axios
@@ -46,6 +42,11 @@ export function AuthenticationTitle() {
         alert(res.response.data);
       });
   }
+  useEffect(() => {
+    if (loged === true) {
+      router.replace("/home");
+    }
+  }, []);
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
