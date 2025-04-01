@@ -23,7 +23,7 @@ export default function HomePage() {
   const [name, setName] = useState("");
   const [completedTasks, setCompletedTaks] = useState([]);
   const [sessionSelected, setSessionSelected] = useState("Tasks");
-  const [loged, setLoged] = useState(true);
+
   const [admin, setAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -82,13 +82,7 @@ export default function HomePage() {
       setLoading(false); // Define loading como false após verificar o acesso
     };
     getAcess();
-    axios.get(`${HOST_URL}logedin`, {}).then((response) => {
-      setLoged(response.data);
-      if (response.status != 201) {
-        router.replace("/home");
-        alert("Please, do the login again");
-      }
-    });
+
     axios
       .get(`${HOST_URL}getnameuser`, {
         headers: {
