@@ -23,7 +23,7 @@ export default function HomePage() {
   const [name, setName] = useState("");
   const [completedTasks, setCompletedTaks] = useState([]);
   const [sessionSelected, setSessionSelected] = useState("Tasks");
-
+  const [loged, setLoged] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,6 @@ export default function HomePage() {
           userId: userId,
         },
       });
-
       const data = await response.data;
       const tasks = data.filter((task: Task) => task.state === "pendente");
       const tasksConcluid = data.filter(
@@ -92,6 +91,9 @@ export default function HomePage() {
       })
       .then((res) => {
         setName(res.data);
+        if (res.status === 201) {
+          setLoged(true);
+        }
       })
       .catch((res) => {
         alert(res.response.data);
@@ -137,7 +139,7 @@ export default function HomePage() {
     console.log(admin, "new");
   }, [admin]);
 
-  return !loading ? (
+  return loged && !loading ? (
     <div className="">
       <Header
         name={name}
