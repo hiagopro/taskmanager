@@ -1,4 +1,12 @@
-import { Button, Group, Input, Paper, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  CloseButton,
+  Group,
+  Input,
+  Paper,
+  Text,
+  TextInput,
+} from "@mantine/core";
 
 import classes from "./Popup.module.css";
 import { IconChevronDown } from "@tabler/icons-react";
@@ -70,6 +78,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
 
   return (
     <div className={classes.wrapper}>
+      <CloseButton onClick={() => setPopup(false)} />
       <Paper shadow="none" radius="lg">
         <form
           className={classes.form}
