@@ -26,55 +26,59 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
   const router = useRouter();
   const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL_API;
   async function AddUserOrTask() {
-    const token = sessionStorage.getItem("token");
-    const userSessionId = sessionStorage.getItem("userId");
+    if (userName != "" && userEmail != "" && userId != "" && password != "") {
+      const token = sessionStorage.getItem("token");
+      const userSessionId = sessionStorage.getItem("userId");
 
-    if (Popup === "Adduser") {
-      await axios
-        .post(
-          `${HOST_URL}adduser`,
-          {
-            username: userName,
-            useremail: userEmail,
-            userrole: userRole,
-            password: password,
-          },
-          {
-            headers: {
-              token: token,
-              userid: userSessionId,
+      if (Popup === "Adduser") {
+        await axios
+          .post(
+            `${HOST_URL}adduser`,
+            {
+              username: userName,
+              useremail: userEmail,
+              userrole: userRole,
+              password: password,
             },
-          }
-        )
-        .then(() => {
-          setPopup(false);
-        })
-        .catch((res) => {
-          alert(res.response.data);
-          router.replace("/login");
-        });
-    } else if (Popup === "Addtask") {
-      await axios
-        .post(
-          `${HOST_URL}addtask`,
-          {
-            task: userName,
-            deadline: userEmail,
+            {
+              headers: {
+                token: token,
+                userid: userSessionId,
+              },
+            }
+          )
+          .then(() => {
+            setPopup(false);
+          })
+          .catch((res) => {
+            alert(res.response.data);
+            router.replace("/login");
+          });
+      } else if (Popup === "Addtask") {
+        await axios
+          .post(
+            `${HOST_URL}addtask`,
+            {
+              task: userName,
+              deadline: userEmail,
 
-            clientId: userId,
-          },
-          {
-            headers: {
-              token: token,
-              userid: userSessionId,
+              clientId: userId,
             },
-          }
-        )
-        .catch((res) => {
-          alert(res.response.data);
-          router.replace("/login");
-        });
-      setPopup(false);
+            {
+              headers: {
+                token: token,
+                userid: userSessionId,
+              },
+            }
+          )
+          .catch((res) => {
+            alert(res.response.data);
+            router.replace("/login");
+          });
+        setPopup(false);
+      }
+    } else {
+      return null;
     }
   }
 
@@ -142,6 +146,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
                     Password
                   </label>
                   <TextInput
+                    type="number"
                     id="email"
                     className={classes.inputField}
                     placeholder="Ex: HGAH927"
