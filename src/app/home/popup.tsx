@@ -78,7 +78,6 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
 
   return (
     <div className={classes.wrapper}>
-      <CloseButton onClick={() => setPopup(false)} />
       <Paper shadow="none" radius="lg">
         <form
           className={classes.form}
@@ -160,6 +159,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
             </div>
 
             <Group justify="flex-end" mt="md">
+              <CloseButton onClick={() => setPopup(false)} />
               <Button
                 type="submit"
                 className={classes.control}
