@@ -46,11 +46,13 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
             },
           }
         )
+        .then(() => {
+          setPopup(false);
+        })
         .catch((res) => {
           alert(res.response.data);
           router.replace("/login");
         });
-      setPopup(false);
     } else if (Popup === "Addtask") {
       await axios
         .post(
