@@ -163,7 +163,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
             </div>
 
             <Group justify="flex-end" mt="md">
-              <CloseButton onClick={() => setPopup(false)} />
+              <CloseButton onSubmit={() => setPopup(false)} />
               <Button
                 type="submit"
                 className={classes.control}
