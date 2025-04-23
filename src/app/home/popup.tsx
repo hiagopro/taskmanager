@@ -97,6 +97,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
                 className={classes.inputField}
                 placeholder={Popup === "Adduser" ? "User name" : "Task"}
                 onChange={(e) => setUserName(e.target.value)}
+                required
               />
             </div>
 
@@ -130,6 +131,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
                     mt="md"
                     className={classes.inputField}
                     onChange={(e) => setUserRole(e.target.value)}
+                    required
                   >
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
@@ -158,11 +160,8 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
               )}
             </div>
 
-            <Group justify="flex-end" mt="md" className="space-between">
-              <CloseButton
-                className="justify-center"
-                onClick={() => setPopup(false)}
-              />
+            <Group justify="flex-end" mt="md">
+              <CloseButton onClick={() => setPopup(false)} />
               <Button
                 type="submit"
                 className={classes.control}
