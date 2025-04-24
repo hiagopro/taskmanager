@@ -26,7 +26,7 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
   const router = useRouter();
   const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL_API;
   async function AddUserOrTask() {
-    if (userName != "" && userEmail != "" && userId != "" && password != "") {
+    if (userName != "" && userEmail != "" && password != "") {
       const token = sessionStorage.getItem("token");
       const userSessionId = sessionStorage.getItem("userId");
 
@@ -77,8 +77,57 @@ export function GetInTouch({ Popup, setPopup }: PopupType) {
           });
         setPopup(false);
       }
-    } else {
-      return null;
+    } else if (userEmail != "" && userName != "" && userId) {
+      const token = sessionStorage.getItem("token");
+      const userSessionId = sessionStorage.getItem("userId");
+
+      if (Popup === "Adduser") {
+        await axios
+          .post(
+            `${HOST_URL}adduser`,
+            {
+              username: userName,
+              useremail: userEmail,
+              userrole: userRole,
+              password: password,
+            },
+            {
+              headers: {
+                token: token,
+                userid: userSessionId,
+              },
+            }
+          )
+          .then(() => {
+            setPopup(false);
+          })
+          .catch((res) => {
+            alert(res.response.data);
+            router.replace("/login");
+          });
+      } else if (Popup === "Addtask") {
+        await axios
+          .post(
+            `${HOST_URL}addtask`,
+            {
+              task: userName,
+              deadline: userEmail,
+
+              clientId: userId,
+            },
+            {
+              headers: {
+                token: token,
+                userid: userSessionId,
+              },
+            }
+          )
+          .catch((res) => {
+            alert(res.response.data);
+            router.replace("/login");
+          });
+        setPopup(false);
+      }
     }
   }
 
